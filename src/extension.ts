@@ -17,17 +17,33 @@ export function activate(context: ExtensionContext) {
   consoleChannel.hide();
   
   var consoleCreation = commands.registerCommand('extension.createConsole', () => {
+    exec("ls -l", function(err, stdout, stderr) {
+      consoleChannel.append(stdout);
+    });
     consoleChannel.show(true);
-    consoleChannel.appendLine('HogeHoge');
+    consoleChannel.append('HogeHoge');
   });
   
   context.subscriptions.push(consoleCreation);
   context.subscriptions.push(consoleChannel);
 }
 
-function printStdout(err: string, stdout: string, stderr: string) {
-  window.showInformationMessage(stdout.split(' ')[0]);
-  window.showInformationMessage('Poe');
+var showStdout = compose3(extractStdout, window.showInformationMessage);
+
+function extractStdout(err: string, stdout: string, stderr: string) {
+  return stdout;
+}
+
+function compose1<A, B, C>(f: (A) => B, g: (B) => C) {
+  return function(arg: A) {
+    return g(f(arg));
+  }
+}
+
+function compose3<A1, A2, A3, B, C>(f: (A1, A2, A3) => B, g: (B) => C) {
+  return function(arg1: A1, arg2: A2, arg3: A3) {
+    return g(f(arg1, arg2, arg3));
+  }
 }
 
 export function deactive() {
