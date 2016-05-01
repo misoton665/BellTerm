@@ -1,7 +1,7 @@
 'use strict';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import {window, commands, ExtensionContext} from 'vscode';
+import {window, commands, workspace, InputBoxOptions, ExtensionContext} from 'vscode';
 
 declare function require(x: string): any;
 
@@ -22,6 +22,19 @@ export function activate(context: ExtensionContext) {
     });
     consoleChannel.show(true);
     consoleChannel.append('HogeHoge');
+  });
+  
+  var promptShow = commands.registerCommand('extension.showPrompt', () => {
+    var opt: InputBoxOptions = {};
+    opt.prompt = 'Shell Command';
+    opt.placeHolder = 'ls -l';
+    opt.validateInput = function(args: string) {
+      consoleChannel.show(true);
+      consoleChannel.append(args);
+      window.showInputBox(opt);
+      return '';
+    };
+    window.showInputBox(opt);
   });
   
   context.subscriptions.push(consoleCreation);

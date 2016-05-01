@@ -12,13 +12,17 @@
     ],
     "activationEvents": [
         "onLanguage:markdown",
-        "onCommand:extension.createConsole"
+        "onCommand:extension.createConsole",
+        "onCommand:extension.showPrompt"
     ],
     "main": "./out/src/extension",
     "contributes": {
         "commands": [{
             "command": "extension.createConsole",
             "title": "poe"
+        },{
+            "command": "extension.showPrompt",
+            "title": "bell prompt"
         }]
     },
     "scripts": {
