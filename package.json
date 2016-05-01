@@ -13,7 +13,8 @@
     "activationEvents": [
         "onLanguage:markdown",
         "onCommand:extension.createConsole",
-        "onCommand:extension.showPrompt"
+        "onCommand:extension.showPrompt",
+        "onCommand:extension.showQuickPick"
     ],
     "main": "./out/src/extension",
     "contributes": {
@@ -23,6 +24,9 @@
         },{
             "command": "extension.showPrompt",
             "title": "bell prompt"
+        },{
+            "command": "extension.showQuickPick",
+            "title": "bell pick"
         }]
     },
     "scripts": {

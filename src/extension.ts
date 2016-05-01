@@ -24,7 +24,7 @@ export function activate(context: ExtensionContext) {
     consoleChannel.append('HogeHoge');
   });
   
-  var promptShow = commands.registerCommand('extension.showPrompt', () => {
+  var promptShowing = commands.registerCommand('extension.showPrompt', () => {
     var opt: InputBoxOptions = {};
     opt.prompt = 'Shell Command';
     opt.placeHolder = 'ls -l';
@@ -37,6 +37,11 @@ export function activate(context: ExtensionContext) {
     window.showInputBox(opt);
   });
   
+  var pickShowing = commands.registerCommand('extension.showQuickPick', () => {
+    window.showQuickPick(["poe", "pipi"]);
+  });
+  
+  context.subscriptions.push(promptShowing);
   context.subscriptions.push(consoleCreation);
   context.subscriptions.push(consoleChannel);
 }
