@@ -1,10 +1,9 @@
 'use strict';
 
+import {BellTerm, CommandCallback} from "./bellterm";
 import {window, commands, workspace, InputBoxOptions, ExtensionContext} from 'vscode';
 
 declare function require(x: string): any;
-
-var exec = require('child_process').exec;
 
 export function activate(context: ExtensionContext) {
 
@@ -13,12 +12,20 @@ export function activate(context: ExtensionContext) {
   var consoleChannel = window.createOutputChannel('console');
   consoleChannel.hide();
   
+  var bellterm = new BellTerm();
+  
   var consoleCreation = commands.registerCommand('extension.createConsole', () => {
-    exec("ls -l", function(err, stdout, stderr) {
-      consoleChannel.append(stdout);
-    });
+    let putStdout: CommandCallback = function(error: Error, stdout: Buffer, stderr: Buffer): void{
+          consoleChannel.append("" + stdout);
+          consoleChannel.append("" + error);
+        },
+        command = "ls -l";
+    
+    //bellterm.runCommand(command, putStdout);
+    bellterm.runCommandFile("/Users/misoton/work/workspace/BellTerm/bellterm/run.sh", putStdout);
+    
     consoleChannel.show(true);
-    consoleChannel.append('HogeHoge');
+    consoleChannel.append("Result of \"" + command + "\"\n");
   });
   
   var promptShowing = commands.registerCommand('extension.showPrompt', () => {
@@ -45,3 +52,4 @@ export function activate(context: ExtensionContext) {
 
 export function deactive() {
 }
+
