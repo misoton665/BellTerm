@@ -12,20 +12,21 @@ export function activate(context: ExtensionContext) {
   var consoleChannel = window.createOutputChannel('console');
   consoleChannel.hide();
   
-  var bellterm = new BellTerm();
+  var bellterm = new BellTerm(workspace.rootPath + "/");
   
   var consoleCreation = commands.registerCommand('extension.createConsole', () => {
     let putStdout: CommandCallback = function(error: Error, stdout: Buffer, stderr: Buffer): void{
           consoleChannel.append("" + stdout);
-          consoleChannel.append("" + error);
-        },
-        command = "ls -l";
-    
-    //bellterm.runCommand(command, putStdout);
-    bellterm.runCommandFile("/Users/misoton/work/workspace/BellTerm/bellterm/run.sh", putStdout);
+          if(error !== null) {
+            consoleChannel.append("" + error);
+          }
+        };
     
     consoleChannel.show(true);
-    consoleChannel.append("Result of \"" + command + "\"\n");
+    
+    console.log(bellterm.getDefaultCommandFile());
+    
+    bellterm.runCommandFile("./run.sh", putStdout);
   });
   
   var promptShowing = commands.registerCommand('extension.showPrompt', () => {
