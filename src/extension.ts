@@ -1,7 +1,7 @@
 'use strict';
 
 import {BellTerm, CommandCallback} from "./bellterm";
-import {window, commands, workspace, InputBoxOptions, ExtensionContext} from 'vscode';
+import {window, commands, workspace, OutputChannel, InputBoxOptions, ExtensionContext} from 'vscode';
 
 declare function require(x: string): any;
 
@@ -9,7 +9,7 @@ export function activate(context: ExtensionContext) {
 
   console.log('Congratulations, your extension "bellterm" is now active!');
   
-  var consoleChannel = window.createOutputChannel('console');
+  var consoleChannel: OutputChannel = window.createOutputChannel('console');
   consoleChannel.hide();
   
   var bellterm = new BellTerm(workspace.rootPath + "/");
@@ -26,7 +26,7 @@ export function activate(context: ExtensionContext) {
     
     console.log(bellterm.getDefaultCommandFile());
     
-    bellterm.runCommandFile("./run.sh", putStdout);
+    bellterm.runCommandFile("./run.s", putStdout);
   });
   
   var promptShowing = commands.registerCommand('extension.showPrompt', () => {
